@@ -22,6 +22,14 @@ const anaSayfa= function (req, res) {
         "imkanlar": ["Kahve","Kekler","İçecekler"],
         "mesafe": "10km"
       } 
+      ,
+      {
+        "ad": "Kahve Dünyası",
+        "adres": "Centrum Gareden Avm",
+        "puan": "3",
+        "imkanlar": ["Dünya Kahveleri","Kekler","Pastalar"],
+        "mesafe": "10km"
+      } 
     ]
   }
   );

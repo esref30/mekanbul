@@ -16,8 +16,49 @@ const yorumSil=function(req,res){
     cevapOlustur(res,200,{"durum":"başarılı"});
 }
 const yorumGetir=function(req,res){
-    cevapOlustur(res,200,{"durum":"başarılı"});
-}
+  if (req.params && req.params.mekanid && req.params.yorumid){
+    Mekan.findById(req.params.mekanid)
+      .select("ad yorumlar")
+      .exec(function (hata,mekan) {
+        var cevap, yorum;
+        if (!mekan){
+          cevapOlustur(res,404,{
+            "hata": "Böyle bir mekan yok!",
+         });
+         return;
+        }else if(hata){
+         cevapOlustur(res,400,hata);
+         return;
+        }
+        if(mekan.yorumlar && mekan.yorumlar.lenght > 0){
+          yorum = mekan.yorumlar.id(req.params.yorumid);
+          if(!yorum){
+            cevapOlustur(res,404,{
+               "hata": "Böyle bir yorum yok!",
+            });
+          }
+          else{
+            cevap ={
+              mekan: {
+                ad: mekan.ad,
+                id: req.params.mekanid,
+              },
+              yorum: yorum,
+            };
+            cevapOlustur(res,200,cevap);
+          }
+        }else{
+         cevapOlustur(res,404,{
+            "hata":"Hiç yorum yok",
+         });
+        }
+      });
+  }else {
+    cevapOlustur(res,404,{
+        "hata":"Bulunamadı. mekanid ve yorumid mutlaka girilmeli",
+    });
+  }
+};
 
 
 module.exports={
